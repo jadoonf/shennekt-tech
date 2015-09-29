@@ -1,0 +1,98 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
+		<link rel="stylesheet" href="lib/onsen/css/onsenui.css">
+		<link rel="stylesheet" href="styles/wishlist.css">
+		<link rel="stylesheet" href="css/wishlist.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="js/jquery.mobile-1.2.0.js"></script>
+		<script src="cordova-2.3.0.js"></script>
+		<script src="js/mustache.js"></script>
+		<link rel="stylesheet" href="css/classes.css">
+		<script src="js/jquery.js"></script> 
+		<script>
+			var db;
+		  function init() {
+			alert("it works");
+			  document.addEventListener("deviceready", onDeviceReady, false);
+		  }
+
+		  function onDeviceReady() {
+			  var networkstate = navigator.connection.type;
+			  if(networkstate == "none")
+			  {
+				  $(".offline").css("visibility","visible");
+			  }
+			  db = window.openDatabase("Notes","1.0","Saved Notes",200000);
+			  db.transaction(getDbNotes,onDbError,onDbSuccess);
+
+		  }
+		  function getDbNotes(tx)
+		  {
+			
+			  tx.executeSql("SELECT * FROM NOTES",[], onSelectNotesSuccess,onDbError);
+		  }
+		  function onSelectNotesSuccess(tx, results) {
+			  dbresults = results;
+			  var len = results.rows.length;
+			  alert(len);
+			  for(var i = 0; i<len; i++) {
+				 /* jQuery("#notelist").append("<li><a href=#newnote onclick='itemindex=" + i + ";'>" + results.rows.item(i).notetitle + "</a></li>");*/
+				  jQuery("#notelist").append("<li class='list__item list__item--tappable list__item__line-height list-item-container'><div class='list-item-main'><div class='list-item-left'><img src='"+results.rows.item(i).noteimage+"' class='thumbnail' /></div><div class=list-item-right><div class='list-item-content'><br/>"+results.rows.item(i).notetitle+"<span class='list-item-name'>"+results.rows.item(i).notedetail+"&nbsp;</span><br/>detail</span></div></div></div><span class='list-item-action'><span class='notification'>"+results.rows.item(i).noterange+"</span></span></li>");
+				  
+			  }
+			  jQuery("#notelist").listview("refresh");
+		  }
+			function onDbSuccess(tx,results)
+			{
+				alert("database success");
+				console.log('db success');
+			}
+		  function onDbError(error)
+		  {
+			  alert("database error"+error.message);
+		  }
+
+		  </script>
+  </head>
+  <body ontouchstart="" class="page scroller" onload="init()">
+    <div class="navigation-bar">
+      <div class="navigation-bar__left">&nbsp; </div>
+      <div class="navigation-bar__center">
+        <span class="navigation-bar__title navigation-bar__line-height">Saved List
+        </span>
+      </div>
+      <div class="navigation-bar__right">&nbsp; </div>
+    </div>
+	  <div data-role="content">
+		  <!--<ul id="notelist" data-role="listview">
+
+		  </ul>-->
+
+
+
+	  </div>
+    <ul class="list list-top" id="notelist" data-role="listview">
+    
+      
+    
+	
+	</ul>
+<div class="tabs-striped tabs-background-dark tabs-color-positive">
+	<div class="tabs">
+		<a class="tab-item" href="index.html">
+			<i class="icon ion-checkmark-round"></i>
+			Save
+		</a>
+		<a class="tab-item active" href="savedlist.html">
+			<i class="icon ion-navicon-round"></i>
+			View All
+		</a>
+
+	</div>
+</div>
+  </body>
+</html>

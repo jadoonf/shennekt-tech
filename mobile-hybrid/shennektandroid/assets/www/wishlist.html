@@ -1,0 +1,242 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
+		<link rel="stylesheet" href="lib/onsen/css/onsenui.css">
+		<link rel="stylesheet" href="styles/wishlist.css">
+		<link rel="stylesheet" href="css/wishlist.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="js/jquery.mobile-1.2.0.js"></script>
+		<script src="cordova-2.3.0.js"></script>
+		<script src="js/mustache.js"></script>
+		<link rel="stylesheet" href="css/classes.css">
+		<script src="js/jquery.js"></script> 
+		<script>
+			var db;
+			var dbresults,itemindex;
+			var notedata = {notetitle:"", notedetail:"", noteimage:"",noterange:""};
+			$(document).on("pageinit", function(){
+
+				// jQuery("#photo").bind("tap", function(){
+
+
+
+
+				function init() {
+					alert("init()");
+					document.addEventListener("deviceready", onDeviceReady, false);
+				}
+
+				function onDeviceReady() {
+					alert("onDeviceReady"); var networkstate = navigator.connection.type;
+					if(networkstate == "none")
+					{
+						$(".offline").css("visibility","visible");
+					}
+					db = window.openDatabase("Notes","1.0","Saved Notes",200000);
+					db.transaction(getDbNotes,onDbError,onDbSuccess);  
+					tx.executeSql("SELECT * FROM NOTES",[], onSelectNotesSuccess,onDbError);
+				}
+				function onSelectNotesSuccess(tx, results) {
+					dbresults = results;
+					var len = results.rows.length;
+					for(var i = 0; i<len; i++) {
+						$("#notelist").append("<li><a href=#newnote onclick='itemindex=" + i + ";'>" + results.rows.item(i).notetitle + "</a></li>");
+					}
+					$("#notelist").listview("refresh");
+				}
+				// onError Callback receives a PositionError object
+				//
+
+
+				function getDbNotes(tx)
+				{
+					tx.executeSql("CREATE TABLE IF NOT EXISTS NOTES(notetitle,notedetail,noteimage,noterange)");
+					// tx.executeSql("SELECT * FROM NOTES",[], onSelectNotesSuccess,onDbError);
+
+				}
+				function onDbSuccess(tx,results)
+				{
+					console.log('db success');
+				}
+				function onDbError(error)
+				{
+					alert("database error"+error.message);
+				}
+				function onError(message) {
+					alert(message);
+				} 
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<div class="navigation-bar">
+			<div class="navigation-bar__left">
+				<span class="toolbar-button--quiet navigation-bar__line-height">Cancel</span>
+			</div>
+			<div class="navigation-bar__center">
+				<span class="navigation-bar__title navigation-bar__line-height">Wishlist</span>
+			</div>
+			<div class="navigation-bar__right">&nbsp; </div>
+		</div>
+		<div class="formarea">
+			<div class="margin-little">
+				<span class="input-label" style="color:#4a87ee;">Item title</span>
+				<input type="text" class="text-input--underbar width-full" placeholder="e.g. Eggs, iPhone cover etc." id="notetitle" name="notetitle" value="">
+			</div>
+			<br>
+			<div class="margin-little">
+				<span class="input-label" style="color:#4a87ee;">Item detail</span>
+				<input type="text" class="text-input--underbar width-full" placeholder="Item detail (e.g Type, quantity, etc.)" id="notedetail" name="notedetail" value="">
+			</div>
+			<div class="lucent">
+				<p class="note">Rate your urgency below</p>
+			</div>
+
+			<ul id="notelist" data-role="listview">
+
+			</ul>
+			<li class="list__item" style="text-aling:center;">
+
+				<div class="list-item-center">
+					<span class="list__item__line-height">
+						<input type="range" value="32" id="noterange" name="noterange" class="range range-center">
+					</span>
+				</div>
+			</li>
+			<br>
+			<img src="" id="image" name="image" />
+			<ul class="list">
+				<li class="list__item list__item--tappable">
+					<button class="button button--large--quiet ion-android-camera" id="noteimage" name="noteimage"></button>
+				</li>
+			</ul>
+			<br>
+			<ul class="list">
+				<li class="list__item list__item--tappable">
+					<button class="button button--large--quiet" id="savenote"> Save Note</button>
+				</li>
+			</ul>
+
+			
+
+
+			<div class="tabs-striped tabs-background-dark tabs-color-positive">
+				<div class="tabs">
+					<a class="tab-item" href="wishlist.html">
+						<i class="icon ion-checkmark-round"></i>
+						Save
+					</a>
+					<a class="tab-item active" href="savedlist.html">
+						<i class="icon ion-navicon-round"></i>
+						View All
+					</a>
+
+				</div>
+			</div>
+			<script>
+				var db,dbresults,imagesource, notetitle, notedetail, noterange;
+				$.noConflict();
+				jQuery(document).ready(function(){
+					db = window.openDatabase("Notes","1.0","Saved Notes",200000);
+					db.transaction(getDbNotes,onDbError,onDbSuccess);
+					function getDbNotes(tx)
+					{
+						tx.executeSql("CREATE TABLE IF NOT EXISTS NOTES(notetitle,notedetail,noteimage,noterange)");				 
+						//  alert("database created");
+						console.log("getDbNotes");
+					}
+					function onDbSuccess(tx,results)
+					{
+						alert("database error"+error.message);
+						console.log('db success');
+					}
+					function onDbError(error)
+					{
+						alert("database error"+error.message);
+					}
+
+					jQuery("#savenote").click(function(){
+						//jQuery("p").text("jQuery is still working!");
+
+						notetitle = document.getElementById("notetitle").value;
+						notedetail = document.getElementById("notedetail").value;
+						noterange = document.getElementById("noterange").value;
+						alert(notetitle+notedetail+noterange);
+						if(notetitle.length === 0){ jQuery('#notetitle').addClass('place');
+												   jQuery("#notetitle").attr("placeholder", "Enter item title").val("").focus().blur();
+												  }
+						else if(notedetail.length === 0){
+							jQuery('#notedetail').addClass('place');
+							jQuery("#notedetail").attr("placeholder", "Enter item title").val("").focus().blur();}
+						else if(imagesource.length === 0)
+						{
+							alert("Select image");
+						}
+						db = window.openDatabase("Notes","1.0","Saved Notes",200000);
+						db.transaction(saveNote1, onDbError1, onDbSuccess1);  
+						try{  
+							server = 'http://54.213.101.106/shennekt/shennekt_add_wishlist.php';
+							console.log("Server "+server);
+							if (server) {
+								// Specify transfer options
+								var options = new FileUploadOptions();
+								options.fileKey="file";
+								options.fileName=imagesource.substr(imagesource.lastIndexOf('/')+1);
+								options.mimeType="image/jpeg";
+								options.chunkedMode = false;
+								options.params = {
+									title: notetitle,
+									description: notedetail,
+									priority: noterange
+								
+								};
+								// Transfer picture to server
+								var ft = new FileTransfer();
+								ft.upload(imagesource, server, function(r) {
+								},
+										  function(error) {
+										  }, options);
+							}
+							else {}               
+						}catch(excee){}
+
+					});
+					function saveNote1(tx) 
+					{
+						tx.executeSql("INSERT INTO NOTES (notetitle, notedetail, noteimage, noterange) VALUES (?, ?, ?, ?)",[notetitle, notedetail, imagesource, noterange]);
+					}
+					function onDbSuccess1(tx,results)
+					{
+						alert("database success");
+						console.log('db success');
+					}
+					function onDbError1(error)
+					{
+						alert("database error"+error.message);
+					}
+					jQuery("#noteimage").click(function()
+											   {
+												   alert("ads");
+												   var options = {
+													   sourceType:Camera.PictureSourceType.CAMERA, destinationType: Camera.DestinationType.FILE_URI};
+												   navigator.camera.getPicture(onCameraSuccess, onError, options);
+											   });
+
+					function onCameraSuccess(imageURI)
+					{
+						alert(imageURI);
+			imagesource = imageURI;
+	jQuery("#image").attr("src", imageURI).height(100).width(200);
+	jQuery("#image").css("display","block");
+					
+					}
+					function onError(message) {
+						alert(message);
+					}
+				});
+			</script>
+			</body>
+		</html>

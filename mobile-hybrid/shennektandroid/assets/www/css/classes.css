@@ -1,0 +1,4 @@
+/* Red color text */
+.place::-webkit-input-placeholder {
+color: #ff0000
+}

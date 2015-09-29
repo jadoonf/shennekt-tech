@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Menu page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="./styles/menucss/style.css" />
+	<link rel="stylesheet" type="text/css" href="./styles/menucss/photoswipe/photoswipe.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/menufont/font-awesome/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="./js/geolocation.js"></script>
+</head>
+<body>
+
+
+
+	<div class="screen">
+		<div class="menu">
+			<ul class="ulMenu">
+				<li><a href="javascript:menu('1');" ><i class="fa fa-user"></i><span>Profile</span></a></li>
+				<li><a href="javascript:menu('2');"><i class="fa fa-reorder"></i><span>Wishlist</span></a></li>
+				<li><a href="javascript:menu('3');"><i class="fa fa-tags"></i><span>Coupons</span></a></li>
+				<li><a href="javascript:menu('4');"><i class="fa fa-map-marker"></i><span>Location</span></a></li>
+				<li><a href="javascript:menu('5');"><i class="fa fa-gear"></i><span>Settings</span></a></li>
+				
+			</ul>
+		</div>
+		<div class="content">
+			<div id="body">
+				<div class="headerBack">
+					<div id="header" class="borderRadius">
+						<a class="button" href="#"><div class="btn"><i class="fa fa-reorder"></i></div></a>
+						<h1 class="sectionTitle"></h1>
+						<a id="location" style="display:none;" href="javascript:alert('Button only')">
+							<div class="location"><i id="posIcon" class="fa fa-location-arrow"></i></div>
+						</a>
+					</div>
+				</div>
+				<div id="wrapper">
+					<div class="scroller">
+						<div id="sectionContent"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="./js/geolocation.js"></script>
+
+	<script type="text/javascript" src="./js/menujs/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="./js/menujs/menu.js"></script>
+	<script type="text/javascript" src="./js/menujs/fastclick.js"></script>
+	<script type="text/javascript" src="./js/menujs/iscroll.js"></script>
+	<script type="text/javascript" src="./js/menujs/photoswipe/klass.min.js"></script>
+	<script type="text/javascript" src="./js/menujs/photoswipe/code.photoswipe.jquery-3.0.5.min.js"></script>
+	<script type="text/javascript" src="./js/menujs/jquery.slides.min.js"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+	<script type="text/javascript" src="cordova-2.3.0.js"></script> <!-- This script is only for Phonegap -->
+	<script id="test" type="text/javascript" src="./js/menujs/index.js"></script>
+	<script type="text/javascript">
+	    app.initialize();
+	</script>
+</body>
+</html>
